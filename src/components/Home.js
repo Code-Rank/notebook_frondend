@@ -1,6 +1,13 @@
-const Home=()=>{
+import Notes from "../components/Notes.js"
+import Addnote from "./Addnote.js";
+
+const Home = () => {
     return (<>
-        <h1>Home</h1>
+        <div className="container ">
+            <Addnote/>
+            <Notes />
+        </div>
+
     </>);
 }
 export default Home;

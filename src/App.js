@@ -2,46 +2,51 @@
 import Navbar from "./components/Navbar.js";
 import About from "./components/About.js";
 import Home from "./components/Home.js";
-import { useContext, useEffect, useState,useRef } from "react";
+import { useEffect, useState } from "react";
 import noteContext from "./contaxt/noteContaxt.js";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Login from "./components/Login.js";
+import Signup from "./components/Signup.js";
 
 function App() {
 
   let note_data = [];
   const [note, setNote] = useState(note_data);
-  const openModal=useRef(null);
-  const closeModal=useRef(null);
-  const url = "http://localhost:3001/";
-  
+  const [showMenu, setMenu] = useState("false");
+  let user_id=JSON.parse(localStorage.getItem('id'));
+  //console.log(user_id);
 
-  const fetchNote = async () => {
+
+  const url = "http://localhost:3001/";
+
+
+  const fetchNote = async (user_id) => {
     try {
-      const response = await fetch(`${url}note/getnotes/123`, {
+      const response = await fetch(`${url}note/getnotes/${user_id}`, {
         method: "GET", // *GET, POST, PUT, DELETE, etc.
 
         headers: {
           "Content-Type": "application/json",
         },
       });
-      //console.log(response);
+      ////console.log(response);
       note_data = await response.json();
-      console.log(note_data);
+      //console.log(note_data);
     } catch (error) {
-      console.log(error);
+      //console.log(error);
     }
     setNote(note_data);
 
   }
   useEffect(() => {
-    fetchNote();
+    fetchNote(user_id);
   }, []);
 
 
 
 
   const addNote = async (title, description, user_id) => {
-    console.log(title + " " + description);
+    //console.log(title + " " + description);
     const response = await fetch(`${url}note/createnote`, {
       method: "POST",
       headers: {
@@ -50,8 +55,8 @@ function App() {
 
       body: JSON.stringify({ title, description, user_id }),
     });
-    fetchNote();
-    //console.log("h");
+    fetchNote(user_id);
+    ////console.log("h");
     //setNote(note.concat(data));
   }
 
@@ -76,9 +81,9 @@ function App() {
 
   }
 
-  const updateNote =async (title,description,user_id,note_id) => {
- 
-    console.log(title + " " + description);
+  const updateNote = async (title, description, user_id, note_id) => {
+
+    //console.log(title + " " + description);
     const response = await fetch(`${url}note/updatenote/${note_id}`, {
       method: "PUT",
       headers: {
@@ -87,22 +92,24 @@ function App() {
 
       body: JSON.stringify({ title, description, user_id }),
     });
-    fetchNote();
-    //console.log("h");
+    fetchNote(user_id);
+    ////console.log("h");
     //setNote(note.concat(data));
 
   }
   return (
 
     <>
-      <noteContext.Provider value={{ note, addNote, deleteNote ,updateNote}}>
+      <noteContext.Provider value={{ note, addNote, deleteNote, updateNote, fetchNote}}>
         <Router>
 
-          <Navbar />
+          <Navbar menu={{ showMenu, setMenu }} />
           <Routes>
 
-            <Route path="/about" element={<About />} />
-            <Route path="/home" element={<Home />} />
+            <Route path="/about" element={<About menu={{ showMenu, setMenu }} />} />
+            <Route path="/home" element={<Home menu={{ showMenu, setMenu }} />} />
+            <Route path="/login" element={<Login menu={{ showMenu, setMenu }} />} />
+            <Route path="/signup" element={<Signup menu={{ showMenu, setMenu }} />} />
 
           </Routes>
         </Router>

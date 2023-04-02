@@ -4,7 +4,7 @@ import noteContext from "../contaxt/noteContaxt.js";
 
 const Notesitem = (props) => {
     const note_contaxt=useContext(noteContext);
-    const {openModal,deleteNote}=note_contaxt;
+    const {deleteNote}=note_contaxt;
    
     
     return (<>
@@ -16,7 +16,7 @@ const Notesitem = (props) => {
             <div className="card-body">
                 <h5 className="card-title">{props.note.title}</h5>
                 <p className="card-text">{props.note.description}</p>
-                <a href="#" className="btn btn-primary">Go somewhere</a>
+                {/* <a href="#" className="btn btn-primary">Go somewhere</a> */}
             </div>
         </div>
     </>);

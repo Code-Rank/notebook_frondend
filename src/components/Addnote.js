@@ -1,17 +1,20 @@
-import {react,useContext} from "react";
+import {useContext} from "react";
 import noteContext from "../contaxt/noteContaxt.js";
 
 
 const Addnote = () => {
    const note_contaxt=useContext(noteContext);
-   const {note,addNote}=note_contaxt;
+   const {addNote}=note_contaxt;
    
     const AddNewNote=(e)=>{
        e.preventDefault();
        let title=document.getElementById("title");
        let description=document.getElementById("description");
-
-       addNote(title.value,description.value,'123');
+       let user_id=JSON.parse(localStorage.getItem('id'));
+       //console.log(`id is ${user_id}`);
+       addNote(title.value,description.value,user_id);
+       description.value="";
+       title.value="";
     }
     return (<>
    <div className="card my-5 mx-3 p-4 col-md-10">

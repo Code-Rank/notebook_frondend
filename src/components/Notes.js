@@ -1,17 +1,17 @@
-import react, { useContext, useState, useRef } from "react";
+import { useContext,useRef } from "react";
 import noteContext from "../contaxt/noteContaxt.js";
 import Notesitem from "../components/Notesitem.js";
 const Notes = () => {
 
 
   const note_data = useContext(noteContext);
-  const { note,updateNote } = note_data;
-  console.log(note_data);
+  const { fetchNote,note,updateNote } = note_data;
+  //console.log(note_data);
   const openModal = useRef(null);
   const closeModal = useRef(null);
   const open_modal = (note) => {
     openModal.current.click();
-    console.log(note);
+    //console.log(note);
 
     let etitle = document.getElementById('etitle');
     let edescription = document.getElementById('edescription');
@@ -26,7 +26,11 @@ const Notes = () => {
     let etitle = document.getElementById('etitle').value;
     let edescription = document.getElementById('edescription').value;
     let note_id = document.getElementById('note_id').value;
-    updateNote(etitle, edescription, "123",note_id);
+    let user_id=JSON.parse(localStorage.getItem('id'));
+  
+            
+    updateNote(etitle, edescription, user_id,note_id);
+    
     closeModal.current.click();
     
   }
